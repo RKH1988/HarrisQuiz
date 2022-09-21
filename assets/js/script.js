@@ -78,6 +78,9 @@ var startButtonEl = document.getElementById("quiz-start");
 var qContainerEl = document.getElementById("question-container");
 var endGameEl = document.getElementById("game-end");
 var finalScoreEl = document.getElementById("final-score");
+var showScoreEl = document.getElementById("high-score");
+var startScreenEl = document.getElementById("start-screen");
+var submitHighEl = document.getElementById("high-score");
 var timeLeft = 74;
 
 //display questions and answer choices in a button
@@ -125,7 +128,7 @@ function endGame() {
   endGameEl.classList.remove("display-none");
   finalScoreEl.textContent = score;
 
-  saveScore();
+  submitHighEl.addEventListener("click",saveScore());
 }
 
 //cycle through questions when a button is clicked
@@ -141,7 +144,7 @@ function nextQuestion() {
 }
 
 startButtonEl.addEventListener("click", function beginGame() {
-  var startScreenEl = document.getElementById("start-screen");
+
   //remove start screen and button and begins countdown
   startScreenEl.remove();
   qContainerEl.classList.remove("display-none");
@@ -208,12 +211,35 @@ function saveScore() {
       );
     }
     inputInitials.value = "";
-    viewHighScores();
   }
 }
 
 //view high scores functionality
-function viewHighScores() {}
+
+showScoreEl.addEventListener("click", viewHighScores());
+
+function viewHighScores() {
+  startScreenEl.classList.add("display-none");
+  qContainerEl.classList.add("display-none");
+  endGameEl.classList.add("display-none");
+  showScoreEl.classList.remove("display-none");
+
+  scoreList = document.querySelector('ol')
+  scoreList.innerHTML='';
+
+  tempHighScoreArray = JSON.parse(window.localStorage.getItem('highScores'));
+  if (tempHighScoreArray !=null) {
+    for (let sI=0; sI<=tempHighScoreArray.length; sI++) {
+      var newList = document.createElement('li');
+      newList.textContent=tempHighScoreArray[sI].name + ' - ' + tempHighScoreArray[sI].score;
+      tempHighScoreArray.appendChild(newList);
+    }
+  } else {
+    var newList = document.createElement('p');
+    newList.textContent = 'No High Scores';
+    tempHighScoreArray.appendChild(newList);
+  }
+};
 
 
 //function to clear high score
