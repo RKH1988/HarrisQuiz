@@ -214,3 +214,12 @@ function saveScore() {
 
 //view high scores functionality
 function viewHighScores() {}
+
+
+//function to clear high score
+function clearScores() {
+  document.querySelector("ol").innerHTML='';
+  window.localStorage.clear();
+
+  questionCycle();
+}
