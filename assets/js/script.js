@@ -98,11 +98,10 @@ function questionCycle(i) {
     }
     ansButton.textContent = answerChoices[aI];
     displayChoices.appendChild(ansButton);
-  };
+  }
 
   console.log(displayChoices);
-
-};
+}
 
 displayChoices.addEventListener("click", function ckAnswer(Event) {
   var targetEl = Event.target;
@@ -115,7 +114,7 @@ displayChoices.addEventListener("click", function ckAnswer(Event) {
     timeLeft + 5;
     console.log(timeLeft);
     nextQuestion();
-  };
+  }
 });
 
 function endGame() {
@@ -125,6 +124,8 @@ function endGame() {
   qContainerEl.classList.add("display-none");
   endGameEl.classList.remove("display-none");
   finalScoreEl.textContent = score;
+
+  saveScore();
 }
 
 //cycle through questions when a button is clicked
@@ -133,12 +134,11 @@ function nextQuestion() {
   displayQuestion.innerHTML = "";
   i++;
   if (i >= questions.length || timeLeft === 0) {
-      endGame();
-    } else {
-      questionCycle(i);
-    }
+    endGame();
+  } else {
+    questionCycle(i);
   }
-
+}
 
 startButtonEl.addEventListener("click", function beginGame() {
   var startScreenEl = document.getElementById("start-screen");
@@ -172,5 +172,45 @@ function countdown() {
 }
 
 //save high score to local storage
+function saveScore() {
+  var inputInitials = document.getElementById("initials");
+  var tempHighScoreArray = [];
+
+  if (inputInitials.value != "" || inputInitials.value != null) {
+    var highScoreArray = {
+      name: inputInitials.value,
+      score: score,
+    }
+
+    if (window.localStorage.getItem("highScores") == null) {
+      tempHighScoreArray.push(highScoreArray);
+      window.localStorage.setItem(
+        "highScores",
+        JSON.stringify(tempHighScoreArray)
+      );
+    } else {
+      tempHighScoreArray = JSON.parse(
+        window.localStorage.getItem("highScores")
+      );
+
+      for (let sI = 0; sI < tempHighScoreArray.length; sI++) {
+        if (sI == tempHighScoreArray.length) {
+          tempHighScoreArray.push(highScoreArray);
+          break;
+        } else if (tempHighScoreArray[sI].score < score) {
+          tempHighScoreArray.splice(sI, 0, highScoreArray);
+          break;
+        }
+      }
+      window.localStorage.setItem(
+        "highScores",
+        JSON.stringify(tempHighScoreArray)
+      );
+    }
+    inputInitials.value = "";
+    viewHighScores();
+  }
+}
 
 //view high scores functionality
+function viewHighScores() {}
