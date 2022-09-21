@@ -1,4 +1,4 @@
-var q = 0;
+var i = 0;
 var questions = [
   {
     qText: "Inside which HTML element do we put the JavaScript?",
@@ -73,93 +73,94 @@ console.log(questions);
 
 var displayQuestion = document.getElementById("question-box");
 var displayChoices = document.getElementById("choice-box");
-// var displayedQuestion = questions[q];
-var answerChoices = questions[q].choices;
-var correctChoice = questions[q].correct;
 var timerEl = document.getElementById("time-clock");
 var startButtonEl = document.getElementById("quiz-start");
 var qContainerEl = document.getElementById("question-container");
 var endGameEl = document.getElementById("game-end");
 var finalScoreEl = document.getElementById("final-score");
-var timeLeft = 75;
+var timeLeft = 74;
 
 //display questions and answer choices in a button
-function questionCycle(q) {
-  displayQuestion.textContent = questions[q].qText;
-  
-  for (var i = 0; i < answerChoices.length; i++) {
+function questionCycle(i) {
+  var displayedQuestion = questions[i].qText;
+  var answerChoices = questions[i].choices;
+  var correctChoice = questions[i].correct;
+
+  displayQuestion.textContent = displayedQuestion;
+
+  for (var aI = 0; aI < answerChoices.length; aI++) {
     var ansButton = document.createElement("li");
     ansButton.setAttribute("class", "single-answer");
-    if (correctChoice===answerChoices[i]) {
-      ansButton.setAttribute("id","correct-choice-"+ i);
+    if (correctChoice === answerChoices[aI]) {
+      ansButton.setAttribute("id", "correct-choice-" + aI);
     } else {
-      ansButton.setAttribute("id", "choice-" + i);
+      ansButton.setAttribute("id", "choice-" + aI);
     }
-    ansButton.textContent = answerChoices[i];
+    ansButton.textContent = answerChoices[aI];
     displayChoices.appendChild(ansButton);
-  }
+  };
 
   console.log(displayChoices);
-  
-  displayChoices.addEventListener("click", function ckAnswer(Event) {
-    var targetEl = Event.target;
-    console.log(targetEl);
-    if (!(targetEl.id.includes('correct'))) {
-      timeLeft-=10;
-      nextQuestion();
-    } else {
-      timeLeft+=5;
-      nextQuestion();
-    }
-  });
+
 };
+
+displayChoices.addEventListener("click", function ckAnswer(Event) {
+  var targetEl = Event.target;
+  console.log(targetEl);
+  if (!targetEl.id.includes("correct")) {
+    timeLeft - 10;
+    console.log(timeLeft);
+    nextQuestion();
+  } else {
+    timeLeft + 5;
+    console.log(timeLeft);
+    nextQuestion();
+  };
+});
 
 function endGame() {
   score = timeLeft;
 
   timerEl.classList.add("display-none");
   qContainerEl.classList.add("display-none");
-  endGameEl.classList.remove("display-none")
+  endGameEl.classList.remove("display-none");
   finalScoreEl.textContent = score;
-};
+}
 
 //cycle through questions when a button is clicked
 function nextQuestion() {
   displayChoices.innerHTML = "";
-  q++;
-
-  if (q >= questions.length || timeLeft ===0) {
-    endGame();
-  } else {
-    questionCycle(q);
+  displayQuestion.innerHTML = "";
+  i++;
+  if (i >= questions.length || timeLeft === 0) {
+      endGame();
+    } else {
+      questionCycle(i);
+    }
   }
-};
 
 
-startButtonEl.addEventListener("click",function beginGame() {
-  var startScreenEl = document.getElementById('start-screen');
+startButtonEl.addEventListener("click", function beginGame() {
+  var startScreenEl = document.getElementById("start-screen");
   //remove start screen and button and begins countdown
   startScreenEl.remove();
   qContainerEl.classList.remove("display-none");
   countdown();
-  questionCycle();
+  questionCycle(i);
 });
 
 //add timer
 function countdown() {
-  //set starting time at 74
-  var timeLeft = 74;
-
   //set interval to countdown every second (1000 milliseconds)
-  var timeInterval = setInterval(function() {
+  var timeInterval = setInterval(function () {
     //if timer has more than 1 second left, start countdown
-    if (timeLeft>1) {
+    if (timeLeft > 1) {
       //show remaining seconds
-      timerEl.textContent = timeLeft + ' seconds remaining';
+      timerEl.textContent = timeLeft + " seconds remaining";
       //decrement remaining time
       timeLeft--;
-    } else if (timeLeft===1) {
-      timerEl.textContent = timeLeft + ' second remaining';
+    } else if (timeLeft === 1) {
+      timerEl.textContent = timeLeft + " second remaining";
       timeLeft--;
     } else {
       //when timer reaches 0, set to empty string
@@ -167,8 +168,8 @@ function countdown() {
       //stop timer
       clearInterval(timeInterval);
     }
-  },1000);
-};
+  }, 1000);
+}
 
 //save high score to local storage
 
