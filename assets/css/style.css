@@ -1,0 +1,77 @@
+header {
+    width: 100%;
+}
+
+.top {
+    padding: 10px;
+    font-weight: lighter;
+    font-size: 16px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: auto;
+}
+
+.score-link {
+    color: maroon;
+    font-weight: bold;
+}
+
+.timer-text {
+    color: black;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.start {
+    text-align: center;
+    width: 400px;
+    margin: auto;
+}
+
+.start h1 {
+    text-align: center;
+    font-size: 30px;
+    padding: 10px;
+}
+
+.start-btn {
+    background-color: maroon;
+    color: white;
+    padding: 10px;
+    border: none;
+    text-align: center;
+    font-size: 16px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.qContainer{
+    margin: auto;
+    width: 400px;
+    background-color: lightgray;
+}
+
+.questions {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 5px;
+}
+
+.answers {
+    padding: 5px;
+    border-bottom: 1px lightgray;
+}
+
+.single-answer {
+    background-color: maroon;
+    color: white;
+    font-size: 16px;
+    font-weight: lighter;
+    margin-bottom: 5px;
+    padding: 5px;
+}
+
+.display-none {
+    display: none;
+}

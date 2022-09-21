@@ -2,16 +2,47 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Harris Quiz</title>
+    <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 <body>
-    <div id="question-box">
-        <div id="choice-box">
-        
-        </div>
+    <header>
+        <nav>
+            <div class="top">
+                <div class="score-link">View High Scores</div>
+                <div class="timer-text">Time: <span id="time-clock">75</span> </div>
+            </div>
+        </nav>
+    </header>
+    <div class="start" id="start-screen">
+        <h1>Coding Quiz Challenge</h1>
+        <p>Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score time by ten seconds.</p>
+        <button id="quiz-start" class="start-btn"> Start Quiz</button>
     </div>
+    <div id="question-container" class="qContainer display-none">
+        <div id="question-box" class="questions"></div>
+        <div id="choice-box" class="answers"></div>
+    </div>
+    <div id="game-end" class="game-over display-none">
+        <h1>Game Over</h1>
+        <p>Your final score is <span id="final-score"></span>.</p>
+        <form>
+            <label for="initials">Initials</label>
+            <input type="text" id="initials" name="initials">
+            <input type="submit" id="submitHigh" value="Submit">
+        </form>
+    </div>
+    <div id="high-score" class="display-none">
+        <h1>High Scores</h1>
+        <ol>
+
+        </ol>
+        <button id="goBack">Go Back</button>
+        <button id="clearHigh">Clear High Scores</button>
+    </div>
+
     <script src="./assets/js/script.js"></script>
 </body>
 </html>
