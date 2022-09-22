@@ -88,9 +88,9 @@ function questionCycle(i) {
   var displayedQuestion = questions[i].qText;
   var answerChoices = questions[i].choices;
   var correctChoice = questions[i].correct;
-
+  
   displayQuestion.textContent = displayedQuestion;
-
+  
   for (var aI = 0; aI < answerChoices.length; aI++) {
     var ansButton = document.createElement("li");
     ansButton.setAttribute("class", "single-answer");
@@ -102,7 +102,7 @@ function questionCycle(i) {
     ansButton.textContent = answerChoices[aI];
     displayChoices.appendChild(ansButton);
   }
-
+  
   console.log(displayChoices);
 }
 
@@ -110,26 +110,12 @@ displayChoices.addEventListener("click", function ckAnswer(Event) {
   var targetEl = Event.target;
   console.log(targetEl);
   if (!targetEl.id.includes("correct")) {
-    timeLeft - 10;
-    console.log(timeLeft);
-    nextQuestion();
-  } else {
-    timeLeft + 5;
-    console.log(timeLeft);
-    nextQuestion();
+    timeLeft -= 10;
+    } else {
+    timeLeft += 5;
   }
+  nextQuestion();
 });
-
-function endGame() {
-  score = timeLeft;
-
-  timerEl.classList.add("display-none");
-  qContainerEl.classList.add("display-none");
-  endGameEl.classList.remove("display-none");
-  finalScoreEl.textContent = score;
-
-  submitHighEl.addEventListener("click",saveScore());
-}
 
 //cycle through questions when a button is clicked
 function nextQuestion() {
@@ -144,10 +130,11 @@ function nextQuestion() {
 }
 
 startButtonEl.addEventListener("click", function beginGame() {
-
   //remove start screen and button and begins countdown
-  startScreenEl.remove();
+  startScreenEl.classList.add("display-none");
   qContainerEl.classList.remove("display-none");
+  document.getElementById("timer").classList.remove("display-none");
+  timerEl.classList.remove("display-none");
   countdown();
   questionCycle(i);
 });
@@ -175,7 +162,22 @@ function countdown() {
 }
 
 //save high score to local storage
-function saveScore() {
+
+function endGame() {
+  if (timeLeft<=0){
+    qContainerEl.classList.add("display-none");
+    endGameEl.classList.add("display-none");
+    startScreenEl.classList.remove("display-none");
+    timerEl.classList.add('display-none');
+  } else {
+  score = timeLeft;
+  
+  timerEl.classList.add("display-none");
+  qContainerEl.classList.add("display-none");
+  endGameEl.classList.remove("display-none");
+  finalScoreEl.textContent = score;
+  
+submitHighEl.addEventListener("click", function saveScore() {
   var inputInitials = document.getElementById("initials");
   var tempHighScoreArray = [];
 
@@ -184,15 +186,15 @@ function saveScore() {
       name: inputInitials.value,
       score: score,
     }
-
+    
     if (window.localStorage.getItem("highScores") == null) {
       tempHighScoreArray.push(highScoreArray);
       window.localStorage.setItem(
         "highScores",
         JSON.stringify(tempHighScoreArray)
-      );
-    } else {
-      tempHighScoreArray = JSON.parse(
+        );
+      } else {
+        tempHighScoreArray = JSON.parse(
         window.localStorage.getItem("highScores")
       );
 
@@ -208,21 +210,23 @@ function saveScore() {
       window.localStorage.setItem(
         "highScores",
         JSON.stringify(tempHighScoreArray)
-      );
+        );
     }
     inputInitials.value = "";
   }
+})
 }
+};
 
 //view high scores functionality
-
-showScoreEl.addEventListener("click", viewHighScores());
-
-function viewHighScores() {
+var scoreLinkEl = document.getElementById("score-link");
+scoreLinkEl.addEventListener("click", function viewHighScores() {
   startScreenEl.classList.add("display-none");
   qContainerEl.classList.add("display-none");
   endGameEl.classList.add("display-none");
   showScoreEl.classList.remove("display-none");
+  document.getElementById("timer").classList.add("display-none");
+
 
   scoreList = document.querySelector('ol')
   scoreList.innerHTML='';
@@ -232,20 +236,27 @@ function viewHighScores() {
     for (let sI=0; sI<=tempHighScoreArray.length; sI++) {
       var newList = document.createElement('li');
       newList.textContent=tempHighScoreArray[sI].name + ' - ' + tempHighScoreArray[sI].score;
-      tempHighScoreArray.appendChild(newList);
+      document.getElementById("list").appendChild(newList);
     }
   } else {
     var newList = document.createElement('p');
     newList.textContent = 'No High Scores';
-    tempHighScoreArray.appendChild(newList);
+    document.getElementById("list").appendChild(newList);
   }
-};
+});
 
 
 //function to clear high score
-function clearScores() {
-  document.querySelector("ol").innerHTML='';
-  window.localStorage.clear();
+document.getElementById("clearHigh").addEventListener("click",function clearScores() {
+  document.getElementById("list").innerHTML='';
+  startScreenEl.classList.remove("display-none");
+  showScoreEl.classList.add("display-none");
+  localStorage.clear();
+});
 
-  questionCycle();
-}
+var goBackEl = document.getElementById("goBack");
+goBackEl.addEventListener("click", function startOver() {
+  showScoreEl.classList.add("display-none");
+  startScreenEl.classList.remove("display-none");
+  
+})
